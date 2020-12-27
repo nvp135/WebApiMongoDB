@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": ".NET Core Launch BooksApi",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceRoot}/BooksApi/bin/Debug/netcoreapp3.1/BooksApi.exe",
+            "args": [],
+            "cwd": "${workspaceRoot}/BooksApi",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        }
+    ]
+}
