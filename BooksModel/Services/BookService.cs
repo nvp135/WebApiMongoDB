@@ -1,8 +1,9 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using BooksModel.Database;
 using BooksModel.Models;
 using MongoDB.Driver;
-using System.Collections.Generic;
 using System.Linq;
-using BooksModel.Database;
 
 namespace BooksModel.Services
 {
@@ -19,25 +20,26 @@ namespace BooksModel.Services
             _books = database.GetCollection<Book>(settings.BooksCollectionName);
         }
 
-        public List<Book> Get() =>
-            _books.Find(book => true).ToList();
+        public async Task<List<Book>> Get() =>
+            await _books.Find(book => true).ToListAsync();
 
-        public Book Get(string id) =>
-            _books.Find<Book>(book => book.Id == id).FirstOrDefault();
+        public async Task<Book> Get(string id) =>
+            await _books.Find<Book>(book => book.Id == id).FirstOrDefaultAsync();
 
-        public Book Create(Book book)
+        public async Task<Book> Create(Book book)
         {
-            _books.InsertOne(book);
+            book.Id = string.Empty;
+            await _books.InsertOneAsync(book);
             return book;
         }
 
-        public void Update(string id, Book bookIn) =>
-            _books.ReplaceOne(book => book.Id == id, bookIn);
+        public async Task Update(string id, Book bookIn) =>
+            await _books.ReplaceOneAsync(book => book.Id == id, bookIn);
 
-        public void Remove(Book bookIn) =>
-            _books.DeleteOne(book => book.Id == bookIn.Id);
+        public async Task Remove(Book bookIn) =>
+            await _books.DeleteOneAsync(book => book.Id == bookIn.Id);
 
-        public void Remove(string id) => 
-            _books.DeleteOne(book => book.Id == id);
+        public async Task Remove(string id) => 
+            await _books.DeleteOneAsync(book => book.Id == id);
     }
 }

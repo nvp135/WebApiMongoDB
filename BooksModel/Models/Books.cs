@@ -4,20 +4,35 @@ using Newtonsoft.Json;
 
 namespace BooksModel.Models
 {
-    public class Book
+    /// <summary>
+    /// Класс книга.
+    /// </summary>
+    public class Book : BaseEntity
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
-
+        /// <summary>
+        /// Наименование книги.
+        /// </summary>
+        /// <value></value>
         [BsonElement("Name")]
         [JsonProperty("Name")]
         public string BookName { get; set; }
 
+        /// <summary>
+        /// Цена книги.
+        /// </summary>
+        /// <value></value>
         public decimal Price { get; set; }
 
+        /// <summary>
+        /// Категория книги.
+        /// </summary>
+        /// <value></value>
         public string Category { get; set; }
 
+        /// <summary>
+        /// Автор книги.
+        /// </summary>
+        /// <value></value>
         public string Author { get; set; }
     }
 }
