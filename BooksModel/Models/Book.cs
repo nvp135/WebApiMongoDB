@@ -21,7 +21,7 @@ namespace BooksModel.Models
         /// Цена книги.
         /// </summary>
         /// <value></value>
-        public decimal Price { get; set; }
+        public decimal? Price { get; set; }
 
         /// <summary>
         /// Категория книги.

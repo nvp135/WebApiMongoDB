@@ -14,7 +14,6 @@ function getItems() {
 
 function addItem() {
     let item = { };
-    console.log(jsonFields.length);
 
     for(let key in jsonFields) {
         item[key] = document.getElementById(`add${key}`)?.value.trim();
@@ -64,10 +63,15 @@ function createAddForm() {
     form.setAttribute('action', 'javascript:void(0);');
     form.setAttribute('onsubmit', 'addItem()');
     form.setAttribute('method', 'POST');
+    form.childNodes.forEach(node => node.setAttribute('placeholder', node.id.slice(3)));
     let submit = document.createElement('input');
     submit.type ='submit';
     submit.value='Add';
     form.appendChild(submit);
+
+    form.childNodes.forEach(node => {
+        node.setAttribute("style", "margin:2px;padding:5px;");
+    });
 
     addFormDiv.appendChild(form);
 
@@ -94,6 +98,14 @@ function createEditForm() {
     form.appendChild(close);
 
     editFormDiv.appendChild(form);
+}
+
+function createFilterForm() {
+    let filterFormDiv = document.getElementById('filterFormDiv');
+    filterFormDiv.innerHTML = '';
+    let form = createForm('Filter.');
+    form.setAttribute('action', 'javascript:void(0);');
+    form.setAttribute('onsubmit', 'updateItem()');
 }
 
 function displayEditForm(id) {
@@ -151,9 +163,27 @@ function _displayItems(data) {
         tableHeader.innerHTML = '';
         for(const key in jsonFields) {
             let th = document.createElement('th');
-            th.innerHTML = key;
+            th.innerHTML = '';
+            let sortButton = document.createElement('button');
+            sortButton.textContent = key;
+            sortButton.style = 'background:none; border:none; margin:0; padding:0; cursor: pointer;';
+            sortButton.sortOrderDesc = true;
+            sortButton.onclick = function() {
+                sortTable(key, sortButton.sortOrderDesc);
+                sortButton.sortOrderDesc = !sortButton.sortOrderDesc;
+            };
+            //sortButton.setAttribute('onclick', `sortTable('${key}')`);
+            th.appendChild(sortButton);
             tableHeader.appendChild(th);
+
+            /*background:none;
+            border:none;
+            margin:0;
+            padding:0;
+            cursor: pointer;*/
         }
+        tableHeader.appendChild(document.createElement('th'));
+        tableHeader.appendChild(document.createElement('th'));
     }
 
     const button = document.createElement('button');
@@ -187,9 +217,18 @@ function _displayItems(data) {
     books = data;
 }
 
-function setFields(field) {
-    for(let key in field) {
-        if(typeof field[key] == 'string'){
+function sortTable(field, descOrder) {
+    books.sort(function(a, b){
+        if(a[field] > b[field]) return descOrder ? 1 : -1;
+        if(a[field] == b[field]) return 0;
+        if(a[field] < b[field]) return descOrder ? -1 : 1;
+    });
+    _displayItems(books);
+}
+
+function setFields(row) {
+    for(let key in row) {
+        if(typeof row[key] == 'string'){
             jsonFields[key] = 'text';
         } else {
             jsonFields[key] = 'number';
