@@ -74,7 +74,6 @@ function createAddForm() {
     });
 
     addFormDiv.appendChild(form);
-
 }
 
 function createEditForm() {
@@ -172,15 +171,8 @@ function _displayItems(data) {
                 sortTable(key, sortButton.sortOrderDesc);
                 sortButton.sortOrderDesc = !sortButton.sortOrderDesc;
             };
-            //sortButton.setAttribute('onclick', `sortTable('${key}')`);
             th.appendChild(sortButton);
             tableHeader.appendChild(th);
-
-            /*background:none;
-            border:none;
-            margin:0;
-            padding:0;
-            cursor: pointer;*/
         }
         tableHeader.appendChild(document.createElement('th'));
         tableHeader.appendChild(document.createElement('th'));
